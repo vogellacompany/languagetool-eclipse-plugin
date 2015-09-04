@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.workbench.texteditor.spellingEngine">
+      <engine
+            class="com.vogella.eclipse.languagetool.spellchecker.Engine"
+            default="true"
+            id="LanguageTool.engine"
+            label="LanguageTool">
+      </engine>
+   </extension>
+
+
+</plugin>

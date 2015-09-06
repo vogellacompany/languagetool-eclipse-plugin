@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.vogella.eclipse.languagetool.feature"
-      label="Language Tool Feature"
+      label="Eclipse Spellchecker based on Language Tool"
       version="1.0.0.qualifier"
       provider-name="vogella GmbH">
 

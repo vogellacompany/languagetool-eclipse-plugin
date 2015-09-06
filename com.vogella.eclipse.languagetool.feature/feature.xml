@@ -6,7 +6,7 @@
       provider-name="vogella GmbH">
 
    <description url="https://languagetool.org/">
-      Eclipse plugin providing grammar checking using LanguageTool. LanguageTool official website is https://languagetool.org/
+      Provides functionality to the Eclipse IDE to use the free Open Source Language Tool spell and grammer checking engine. You find the  official website of Language Tool at https://languagetool.org/
    </description>
 
    <copyright url="https://www.eclipse.org/legal/epl-v10.html">

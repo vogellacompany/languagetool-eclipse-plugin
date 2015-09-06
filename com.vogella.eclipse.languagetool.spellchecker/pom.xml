@@ -4,8 +4,7 @@
   <packaging>eclipse-plugin</packaging>
   <parent>
   	<groupId>com.vogella.eclipse.languagetool</groupId>
-  	<artifactId>com.vogella.eclipse.languagetool.master</artifactId>
+  	<artifactId>com.vogella.eclipse.languagetool</artifactId>
   	<version>1.0.0-SNAPSHOT</version>
-  	<relativePath>../com.vogella.eclipse.languagetool.master</relativePath>
   </parent>
 </project>

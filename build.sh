@@ -21,7 +21,6 @@ pushd LanguageTool-3.1-SNAPSHOT
 popd
 rm -rf LanguageTool-$YESTERDAY-snapshot
 
-pushd com.vogella.eclipse.languagetool.master
+# start the Maven build
 mvn clean verify
-popd
 

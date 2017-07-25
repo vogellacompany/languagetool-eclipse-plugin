@@ -31,18 +31,17 @@ You have to ensure that you have installed Maven 3 properly.
 See http://maven.apache.org/download.html#Installation for further information.
 
 
-~~Linux and Mac users can start the build via the build.sh shell script from the command line which downloads the most recent version of LanguageTools, extract the JARS and libs and copy them to the com.vogella.eclipse.languagetool.spellchecker plug-in.~~
+Linux and Mac users can start the build via the build.sh shell script from the command line which downloads the most recent version of LanguageTools, extract the JARS and libs and copy them to the com.vogella.eclipse.languagetool.spellchecker plug-in.
 
-~~You can also manually download the required libaries. Go to https://languagetool.org/download/snapshots/ and download a recent ZIP file. Unzip it and move all JAR files into the `cx.ath.remisoft.languagetool/libs` folder.
-Zip the rest of the folder as `languagetool-standalone.jar` and also place it into the `cx.ath.remisoft.languagetool/libs` folder.~~
-
-All dependencies are now declared in the project pom! That means that no more `build.sh` or any other download is required. Just `cd` into the project root and run `mvn package` to run a complete build.
+You can also manually download the required libaries. Go to https://languagetool.org/download/snapshots/ and download a recent ZIP file.
+Unzip it and move all JAR files into the `cx.ath.remisoft.languagetool/libs` folder.
+Zip the rest of the folder as `languagetool-standalone.jar` and also place it into the `cx.ath.remisoft.languagetool/libs` folder.
 
 
 Example:
 
 ```bash
-mvn package
+build.sh
 ```
 
 

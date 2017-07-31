@@ -10,6 +10,10 @@
             label="LanguageTool">
       </engine>
    </extension>
+   <extension
+         id="id1"
+         point="org.eclipse.core.resources.markers">
+   </extension>
 
 
 </plugin>

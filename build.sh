@@ -11,16 +11,16 @@ rm -rf ../cx.ath.remisoft.languagetool/libs/*.jar
 
 # get dependencies
 YESTERDAY=`date --date="-1 days" +%Y%m%d`
-wget https://languagetool.org/download/snapshots/LanguageTool-$YESTERDAY-snapshot.zip
-unzip LanguageTool-$YESTERDAY-snapshot.zip
-rm LanguageTool-$YESTERDAY-snapshot.zip
-pushd LanguageTool-3.1-SNAPSHOT
-	mv libs/* ../com.vogella.eclipse.languagetool.spellchecker/libs/
-	zip -r languagetool-standalone.jar *
-	mv languagetool-standalone.jar ../com.vogella.eclipse.languagetool.spellchecker/libs/
-popd
-rm -rf LanguageTool-$YESTERDAY-snapshot
+wget https://languagetool.org/download/LanguageTool-3.8.zip
+unzip LanguageTool-3.8.zip
+rm LanguageTool-3.8.zip
+mkdir ./com.vogella.eclipse.languagetool.spellchecker/libs/
+mv LanguageTool-3.8/libs/* ./com.vogella.eclipse.languagetool.spellchecker/libs/
+mv LanguageTool-3.8/*.jar ./com.vogella.eclipse.languagetool.spellchecker/libs/
+rm -rf LanguageTool-3.8/
+wget http://central.maven.org/maven2/org/languagetool/language-en/3.8/language-en-3.8.jar
+mv language-en-3.8.jar ./com.vogella.eclipse.languagetool.spellchecker/libs/
 
 # start the Maven build
-mvn clean verify
+# mvn clean verify
 

@@ -24,62 +24,131 @@ package com.vogella.eclipse.languagetool.spellchecker;
 import java.io.IOException;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.texteditor.spelling.ISpellingEngine;
 import org.eclipse.ui.texteditor.spelling.ISpellingProblemCollector;
 import org.eclipse.ui.texteditor.spelling.SpellingContext;
 import org.languagetool.JLanguageTool;
 import org.languagetool.Language;
 import org.languagetool.language.AmericanEnglish;
+import org.languagetool.markup.AnnotatedTextBuilder;
 import org.languagetool.rules.RuleMatch;
 
 public class Engine implements ISpellingEngine {
-
+	
 	@Override
 	public void check(IDocument document, IRegion[] regions, SpellingContext context,
 			ISpellingProblemCollector collector, IProgressMonitor monitor) {
-
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-
-		// Replaces JLanguageTool default databrocker by one that works in
-		// Eclipse Plugin context
-		
 		JLanguageTool.setDataBroker(new EclipseRessourceDataBroker());
 
 		Language language = null;
 		JLanguageTool langTool = new JLanguageTool(new AmericanEnglish());
-//		for (Language lang : Language.getAllLanguages();
-//			if (lang.getName().equals(store.getString(PreferenceConstants.P_LANGUAGE))) {
-//				language = lang;
-//				break;
-//			}
-//		}
 		language = langTool.getLanguage();
 
-		if (language == null)
+		if (language == null) {
 			return;
-
-		langTool.disableRule("COMMA_PARENTHESIS_WHITESPACE");
-		langTool.disableRule("EN_QUOTES");
-
-		if (langTool != null) {
-			for (IRegion region : regions) {
-				List<RuleMatch> matches;
-				try {
-					matches = langTool.check(document.get(region.getOffset(), region.getLength()));
-					for (RuleMatch match : matches) {
-						collector.accept(new LTSpellingProblem(match));
-					}
-				} catch (IOException | BadLocationException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 
+		for (IRegion region : regions) {
+			AnnotatedTextBuilder textBuilder = new AnnotatedTextBuilder();
+			List<RuleMatch> matches;
+			try {
+				populateBuilder(textBuilder, document.get(region.getOffset(), region.getLength()));
+				matches = langTool.check(textBuilder.build());
+				for (RuleMatch match : matches) {
+					collector.accept(new LTSpellingProblem(match));
+//					addMarker(match);
+				}
+			} catch (IOException | BadLocationException e) {
+				e.printStackTrace(); 
+			}
+		}
+	}
+
+	private void addMarker(RuleMatch match) {
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		workbench.getDisplay().syncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+				IEditorInput currentEditorInput = activeWorkbenchWindow.getActivePage()
+						.getActiveEditor().getEditorInput();
+				IFile file = null;
+				if (currentEditorInput instanceof IFileEditorInput) {
+					file = ((IFileEditorInput) currentEditorInput).getFile();
+					if (file != null) {
+						IMarker marker;
+						try {
+							marker = file.createMarker(IMarker.PROBLEM);
+							marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+							marker.setAttribute(IMarker.MESSAGE, match.getMessage());
+							marker.setAttribute(IMarker.LINE_NUMBER, match.getLine() + 1);
+						} catch (CoreException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}			
+		});
+	}
+
+	private static void populateBuilder(AnnotatedTextBuilder builder, String lines) {
+		String[] splittedList = lines.split("(?<=\\s|\\||\\s\\_|\\[)|(?=\\_\\s|\\])");
+		for (String singleWord : splittedList) {
+			if (isMarkup(singleWord)) {
+				builder.addMarkup(singleWord);
+				continue;
+			}
+			builder.addText(singleWord);
+		}
+	}
+
+	private static boolean isMarkup(String line) {
+		if (line.startsWith("image::")) {
+			return true;
+		}
+
+		if (line.startsWith("menu:")) {
+			return true;
+		}
+
+		if (line.contains("_")) {
+			return true;
+		}
+		
+		if(line.contains("`")) {
+			return true;
+		}
+
+		if (line.startsWith("|")) {
+			return true;
+		}
+
+		if (line.startsWith("btn:")) {
+			return true;
+		}
+
+		if (line.startsWith("include::")) {
+			return true;
+		}
+
+		if (line.startsWith("----")) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

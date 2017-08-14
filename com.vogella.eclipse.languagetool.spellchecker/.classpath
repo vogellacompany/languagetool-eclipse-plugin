@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="libs/annotations.jar"/>
-	<classpathentry kind="lib" path="libs/berkeleylm.jar"/>
-	<classpathentry kind="lib" path="libs/catalan-pos-dict.jar"/>
-	<classpathentry kind="lib" path="libs/cjftransform.jar"/>
-	<classpathentry kind="lib" path="libs/commons-cli.jar"/>
-	<classpathentry kind="lib" path="libs/commons-collections4.jar"/>
-	<classpathentry kind="lib" path="libs/commons-io.jar"/>
-	<classpathentry kind="lib" path="libs/commons-lang.jar"/>
-	<classpathentry kind="lib" path="libs/commons-lang3.jar"/>
-	<classpathentry kind="lib" path="libs/commons-logging.jar"/>
-	<classpathentry kind="lib" path="libs/german-pos-dict.jar"/>
-	<classpathentry kind="lib" path="libs/guava.jar"/>
-	<classpathentry kind="lib" path="libs/hamcrest-core.jar"/>
-	<classpathentry kind="lib" path="libs/hppc.jar"/>
-	<classpathentry kind="lib" path="libs/hunspell-native-libs.jar"/>
-	<classpathentry kind="lib" path="libs/ictclas4j.jar"/>
-	<classpathentry kind="lib" path="libs/icu4j.jar"/>
-	<classpathentry kind="lib" path="libs/jackson-annotations.jar"/>
-	<classpathentry kind="lib" path="libs/jackson-core.jar"/>
-	<classpathentry kind="lib" path="libs/jackson-databind.jar"/>
-	<classpathentry kind="lib" path="libs/jcommander.jar"/>
-	<classpathentry kind="lib" path="libs/jna.jar"/>
-	<classpathentry kind="lib" path="libs/jsonic.jar"/>
-	<classpathentry kind="lib" path="libs/junit.jar"/>
-	<classpathentry kind="lib" path="libs/jwordsplitter.jar"/>
-	<classpathentry kind="lib" path="libs/language-detector.jar"/>
-	<classpathentry kind="lib" path="libs/language-en-3.8.jar"/>
-	<classpathentry kind="lib" path="libs/languagetool-commandline.jar"/>
-	<classpathentry kind="lib" path="libs/languagetool-core-tests.jar"/>
-	<classpathentry kind="lib" path="libs/languagetool-core.jar"/>
-	<classpathentry kind="lib" path="libs/languagetool-gui-commons.jar"/>
-	<classpathentry kind="lib" path="libs/languagetool-server.jar"/>
-	<classpathentry kind="lib" path="libs/languagetool-tools.jar"/>
-	<classpathentry kind="lib" path="libs/languagetool.jar"/>
-	<classpathentry kind="lib" path="libs/lucene-backward-codecs.jar"/>
-	<classpathentry kind="lib" path="libs/lucene-core.jar"/>
-	<classpathentry kind="lib" path="libs/lucene-gosen-ipadic.jar"/>
-	<classpathentry kind="lib" path="libs/morfologik-fsa-builders.jar"/>
-	<classpathentry kind="lib" path="libs/morfologik-fsa.jar"/>
-	<classpathentry kind="lib" path="libs/morfologik-speller.jar"/>
-	<classpathentry kind="lib" path="libs/morfologik-stemming.jar"/>
-	<classpathentry kind="lib" path="libs/morfologik-tools.jar"/>
-	<classpathentry kind="lib" path="libs/morfologik-ukrainian-lt.jar"/>
-	<classpathentry kind="lib" path="libs/morphology-el.jar"/>
-	<classpathentry kind="lib" path="libs/opennlp-chunk-models.jar"/>
-	<classpathentry kind="lib" path="libs/opennlp-postag-models.jar"/>
-	<classpathentry kind="lib" path="libs/opennlp-tokenize-models.jar"/>
-	<classpathentry kind="lib" path="libs/opennlp-tools.jar"/>
-	<classpathentry kind="lib" path="libs/openregex.jar"/>
-	<classpathentry kind="lib" path="libs/segment.jar"/>
-	<classpathentry kind="lib" path="libs/slf4j-api.jar"/>
-	<classpathentry kind="lib" path="libs/slf4j-nop.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src/"/>
+	<classpathentry exported="true" kind="lib" path="libs/annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/berkeleylm.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/catalan-pos-dict.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/cjftransform.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-cli.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-collections4.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-io.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-lang.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-lang3.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/commons-logging.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/german-pos-dict.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/guava.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/hamcrest-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/hppc.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/hunspell-native-libs.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ictclas4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/icu4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jackson-annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jackson-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jackson-databind.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jcommander.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jna.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jsonic.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/jwordsplitter.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/language-detector.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/language-en-3.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/languagetool-commandline.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/languagetool-core-tests.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/languagetool-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/languagetool-gui-commons.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/languagetool-server.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/languagetool-tools.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/languagetool.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lucene-backward-codecs.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lucene-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/lucene-gosen-ipadic.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/morfologik-fsa-builders.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/morfologik-fsa.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/morfologik-speller.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/morfologik-stemming.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/morfologik-tools.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/morfologik-ukrainian-lt.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/morphology-el.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/opennlp-chunk-models.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/opennlp-postag-models.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/opennlp-tokenize-models.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/opennlp-tools.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/openregex.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/segment.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/slf4j-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/slf4j-nop.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

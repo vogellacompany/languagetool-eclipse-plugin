@@ -44,6 +44,7 @@ import org.languagetool.Language;
 import org.languagetool.language.AmericanEnglish;
 import org.languagetool.markup.AnnotatedTextBuilder;
 import org.languagetool.rules.RuleMatch;
+import org.languagetool.tokenizers.en.EnglishWordTokenizer;
 
 public class Engine implements ISpellingEngine {
 	
@@ -51,25 +52,22 @@ public class Engine implements ISpellingEngine {
 	public void check(IDocument document, IRegion[] regions, SpellingContext context,
 			ISpellingProblemCollector collector, IProgressMonitor monitor) {
 		JLanguageTool.setDataBroker(new EclipseRessourceDataBroker());
-
-		Language language = null;
 		JLanguageTool langTool = new JLanguageTool(new AmericanEnglish());
-		language = langTool.getLanguage();
-
+		Language language = langTool.getLanguage();
 		if (language == null) {
 			return;
-		}
-
+		}		
+		
 		for (IRegion region : regions) {
 			AnnotatedTextBuilder textBuilder = new AnnotatedTextBuilder();
 			List<RuleMatch> matches;
 			try {
 				populateBuilder(textBuilder, document.get(region.getOffset(), region.getLength()));
-				matches = langTool.check(textBuilder.build());
+				matches = langTool.check(textBuilder.build());					
 				for (RuleMatch match : matches) {
-					collector.accept(new LTSpellingProblem(match));
-//					addMarker(match);
-				}
+						collector.accept(new LTSpellingProblem(match));
+//						addMarker(match);
+				}				
 			} catch (IOException | BadLocationException e) {
 				e.printStackTrace(); 
 			}
@@ -105,8 +103,16 @@ public class Engine implements ISpellingEngine {
 	}
 
 	private static void populateBuilder(AnnotatedTextBuilder builder, String lines) {
-		String[] splittedList = lines.split("(?<=\\s|\\||\\s\\_|\\[)|(?=\\_\\s|\\])");
-		for (String singleWord : splittedList) {
+		EnglishWordTokenizer wordTokenizer = new EnglishWordTokenizer() {
+			@Override
+			public String getTokenizingCharacters() {
+				return super.getTokenizingCharacters() + "_";
+			}
+		};
+		
+		List<String> tokens = wordTokenizer.tokenize(lines);
+//		String[] splittedList = lines.split("(?<=\\s|\\||\\s\\_|\\[)|(?=\\_\\s|\\])");
+		for (String singleWord : tokens) {
 			if (isMarkup(singleWord)) {
 				builder.addMarkup(singleWord);
 				continue;

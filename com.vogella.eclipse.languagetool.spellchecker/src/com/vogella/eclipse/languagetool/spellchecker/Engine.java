@@ -22,6 +22,7 @@ THE SOFTWARE.
 package com.vogella.eclipse.languagetool.spellchecker;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -36,6 +37,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.texteditor.spelling.ISpellingEngine;
 import org.eclipse.ui.texteditor.spelling.ISpellingProblemCollector;
 import org.eclipse.ui.texteditor.spelling.SpellingContext;
@@ -47,7 +49,7 @@ import org.languagetool.rules.RuleMatch;
 import org.languagetool.tokenizers.en.EnglishWordTokenizer;
 
 public class Engine implements ISpellingEngine {
-	
+
 	@Override
 	public void check(IDocument document, IRegion[] regions, SpellingContext context,
 			ISpellingProblemCollector collector, IProgressMonitor monitor) {
@@ -56,49 +58,65 @@ public class Engine implements ISpellingEngine {
 		Language language = langTool.getLanguage();
 		if (language == null) {
 			return;
-		}		
-		
+		}
+
 		for (IRegion region : regions) {
 			AnnotatedTextBuilder textBuilder = new AnnotatedTextBuilder();
 			List<RuleMatch> matches;
 			try {
 				populateBuilder(textBuilder, document.get(region.getOffset(), region.getLength()));
-				matches = langTool.check(textBuilder.build());					
-				for (RuleMatch match : matches) {
-						collector.accept(new LTSpellingProblem(match));
-//						addMarker(match);
-				}				
+				matches = langTool.check(textBuilder.build());
+				processMatches(collector, matches);
 			} catch (IOException | BadLocationException e) {
-				e.printStackTrace(); 
+				e.printStackTrace();
 			}
 		}
+	}
+
+	private void processMatches(ISpellingProblemCollector collector, List<RuleMatch> matches) {
+		WorkspaceModifyOperation workspaceRunnable = new WorkspaceModifyOperation() {
+			@Override
+			protected void execute(IProgressMonitor monitor)
+					throws CoreException, InvocationTargetException, InterruptedException {
+				for (RuleMatch match : matches) {
+					collector.accept(new LTSpellingProblem(match));
+					addMarker(match);
+				}
+			}
+		};
+		
+		try {
+			workspaceRunnable.run(null);
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
+		}		
 	}
 
 	private void addMarker(RuleMatch match) {
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		workbench.getDisplay().syncExec(new Runnable() {
-
 			@Override
 			public void run() {
 				IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
-				IEditorInput currentEditorInput = activeWorkbenchWindow.getActivePage()
-						.getActiveEditor().getEditorInput();
+				IEditorInput currentEditorInput = activeWorkbenchWindow.getActivePage().getActiveEditor()
+						.getEditorInput();
 				IFile file = null;
 				if (currentEditorInput instanceof IFileEditorInput) {
 					file = ((IFileEditorInput) currentEditorInput).getFile();
 					if (file != null) {
-						IMarker marker;
+						IMarker marker = null;
 						try {
 							marker = file.createMarker(IMarker.PROBLEM);
 							marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 							marker.setAttribute(IMarker.MESSAGE, match.getMessage());
-							marker.setAttribute(IMarker.LINE_NUMBER, match.getLine() + 1);
+							marker.setAttribute(IMarker.CHAR_START, match.getFromPos());
+							marker.setAttribute(IMarker.CHAR_END, match.getToPos());
 						} catch (CoreException e) {
 							e.printStackTrace();
 						}
 					}
 				}
-			}			
+			}
 		});
 	}
 
@@ -109,9 +127,10 @@ public class Engine implements ISpellingEngine {
 				return super.getTokenizingCharacters() + "_";
 			}
 		};
-		
+
 		List<String> tokens = wordTokenizer.tokenize(lines);
-//		String[] splittedList = lines.split("(?<=\\s|\\||\\s\\_|\\[)|(?=\\_\\s|\\])");
+		// String[] splittedList =
+		// lines.split("(?<=\\s|\\||\\s\\_|\\[)|(?=\\_\\s|\\])");
 		for (String singleWord : tokens) {
 			if (isMarkup(singleWord)) {
 				builder.addMarkup(singleWord);
@@ -133,8 +152,8 @@ public class Engine implements ISpellingEngine {
 		if (line.contains("_")) {
 			return true;
 		}
-		
-		if(line.contains("`")) {
+
+		if (line.contains("`")) {
 			return true;
 		}
 

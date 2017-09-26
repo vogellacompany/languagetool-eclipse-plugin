@@ -80,7 +80,7 @@ public class Engine implements ISpellingEngine {
 					throws CoreException, InvocationTargetException, InterruptedException {
 				for (RuleMatch match : matches) {
 					collector.accept(new LTSpellingProblem(match));
-					addMarker(match);
+//					addMarker(match);
 				}
 			}
 		};

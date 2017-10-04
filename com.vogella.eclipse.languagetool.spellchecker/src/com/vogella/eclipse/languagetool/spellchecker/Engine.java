@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.text.BadLocationException;
@@ -49,6 +50,8 @@ import org.languagetool.rules.RuleMatch;
 import org.languagetool.tokenizers.en.EnglishWordTokenizer;
 
 public class Engine implements ISpellingEngine {
+
+	private static final String MY_MARKER_TYPE = "com.vogella.eclipse.languagetool.spellchecker.spellingproblem";
 
 	@Override
 	public void check(IDocument document, IRegion[] regions, SpellingContext context,
@@ -78,18 +81,44 @@ public class Engine implements ISpellingEngine {
 			@Override
 			protected void execute(IProgressMonitor monitor)
 					throws CoreException, InvocationTargetException, InterruptedException {
-				for (RuleMatch match : matches) {
+				// TODO
+				deleteMarkers();
+				matches.forEach(match -> {
 					collector.accept(new LTSpellingProblem(match));
-//					addMarker(match);
-				}
+					addMarker(match);
+				});
 			}
+
 		};
-		
+
 		try {
 			workspaceRunnable.run(null);
 		} catch (InvocationTargetException | InterruptedException e) {
 			e.printStackTrace();
-		}		
+		}
+	}
+
+	private void deleteMarkers() {
+		IWorkbench workbench = PlatformUI.getWorkbench();
+		workbench.getDisplay().syncExec(new Runnable() {
+			@Override
+			public void run() {
+				IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
+				IEditorInput currentEditorInput = activeWorkbenchWindow.getActivePage().getActiveEditor()
+						.getEditorInput();
+				if (currentEditorInput instanceof IFileEditorInput) {
+					IFile file = ((IFileEditorInput) currentEditorInput).getFile();
+					if (file != null) {
+						try {
+							// delete all markers of current resource and type
+							file.deleteMarkers(MY_MARKER_TYPE, true, IResource.DEPTH_ZERO);
+						} catch (CoreException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		});
 	}
 
 	private void addMarker(RuleMatch match) {
@@ -100,15 +129,15 @@ public class Engine implements ISpellingEngine {
 				IWorkbenchWindow activeWorkbenchWindow = workbench.getActiveWorkbenchWindow();
 				IEditorInput currentEditorInput = activeWorkbenchWindow.getActivePage().getActiveEditor()
 						.getEditorInput();
-				IFile file = null;
 				if (currentEditorInput instanceof IFileEditorInput) {
-					file = ((IFileEditorInput) currentEditorInput).getFile();
+					IFile file = ((IFileEditorInput) currentEditorInput).getFile();
 					if (file != null) {
 						IMarker marker = null;
 						try {
-							marker = file.createMarker(IMarker.PROBLEM);
+							marker = file.createMarker(MY_MARKER_TYPE);
 							marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 							marker.setAttribute(IMarker.MESSAGE, match.getMessage());
+							marker.setAttribute(IMarker.LOCATION, match.getLine() + 1);
 							marker.setAttribute(IMarker.CHAR_START, match.getFromPos());
 							marker.setAttribute(IMarker.CHAR_END, match.getToPos());
 						} catch (CoreException e) {

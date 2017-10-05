@@ -9,7 +9,7 @@ Copyright (c) 2017 vogella GmbH and others.
  *
  * Contributors:
  *     remi.auguste@gmail.com - initial API and implementation
- *     vogella GmbH - rewritten the intial code
+ *     vogella GmbH - rewritten the initial code
 *******************************************************************************/
 
 package com.vogella.eclipse.languagetool.spellchecker;

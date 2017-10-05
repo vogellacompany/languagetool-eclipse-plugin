@@ -142,9 +142,9 @@ public class Engine implements ISpellingEngine {
 	}
 
 	private static void populateBuilder(AnnotatedTextBuilder builder, String lines) {
-		String[] splittedList = lines.split("(?<=image::|btn:|menu:|[\\s\\[])"
+		String[] splittedList = lines.split("(?<=image::|btn:|menu:|include::|[\\s\\[\\`])"
 				+ "|"
-				+ "(?=[\\]\\[])");
+				+ "(?=[\\]\\[\\`])");
 		for (String token : splittedList) {
 			if (isMarkup(token)) {
 				builder.addMarkup(token);
@@ -184,6 +184,10 @@ public class Engine implements ISpellingEngine {
 		}
 
 		if (line.startsWith("----")) {
+			return true;
+		}
+		
+		if (line.contains("\\") || line.contains("/")) {
 			return true;
 		}
 

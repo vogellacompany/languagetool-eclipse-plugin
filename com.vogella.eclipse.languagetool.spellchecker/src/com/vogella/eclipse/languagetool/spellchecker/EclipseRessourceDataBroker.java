@@ -37,6 +37,7 @@ public class EclipseRessourceDataBroker extends DefaultResourceDataBroker {
 		super(resourceDir, rulesDir);
 	}
 
+	@Override
 	public URL getFromResourceDirAsUrl(final String path)
 	{
 		try {

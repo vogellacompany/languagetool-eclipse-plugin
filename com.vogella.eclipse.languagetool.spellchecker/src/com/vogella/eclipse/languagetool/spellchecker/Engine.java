@@ -40,7 +40,6 @@ import org.languagetool.Language;
 import org.languagetool.language.AmericanEnglish;
 import org.languagetool.markup.AnnotatedTextBuilder;
 import org.languagetool.rules.RuleMatch;
-import org.languagetool.tokenizers.en.EnglishWordTokenizer;
 
 public class Engine implements ISpellingEngine {
 
@@ -143,22 +142,15 @@ public class Engine implements ISpellingEngine {
 	}
 
 	private static void populateBuilder(AnnotatedTextBuilder builder, String lines) {
-		EnglishWordTokenizer wordTokenizer = new EnglishWordTokenizer() {
-			@Override
-			public String getTokenizingCharacters() {
-				return super.getTokenizingCharacters() + "_";
-			}
-		};
-
-		List<String> tokens = wordTokenizer.tokenize(lines);
-		// String[] splittedList =
-		// lines.split("(?<=\\s|\\||\\s\\_|\\[)|(?=\\_\\s|\\])");
-		for (String singleWord : tokens) {
-			if (isMarkup(singleWord)) {
-				builder.addMarkup(singleWord);
+		String[] splittedList = lines.split("(?<=image::|btn:|menu:|[\\s\\[])"
+				+ "|"
+				+ "(?=[\\]\\[])");
+		for (String token : splittedList) {
+			if (isMarkup(token)) {
+				builder.addMarkup(token);
 				continue;
 			}
-			builder.addText(singleWord);
+			builder.addText(token);
 		}
 	}
 

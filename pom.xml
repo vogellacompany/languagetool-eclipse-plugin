@@ -28,6 +28,7 @@
   <module>./com.vogella.eclipse.languagetool.spellchecker</module>
   <module>./com.vogella.eclipse.languagetool.feature</module>
   <module>./releng/com.vogella.eclipse.languagetool.updatesite</module>
+  <module>./com.vogella.eclipse.languagetool.tests</module>
   </modules>
 
 </project>

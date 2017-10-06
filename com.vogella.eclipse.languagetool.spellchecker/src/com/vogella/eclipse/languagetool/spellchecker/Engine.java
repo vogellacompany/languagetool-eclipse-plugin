@@ -41,6 +41,8 @@ import org.languagetool.language.AmericanEnglish;
 import org.languagetool.markup.AnnotatedTextBuilder;
 import org.languagetool.rules.RuleMatch;
 
+import com.vogella.eclipse.languagetool.spellchecker.internal.MarkupUtil;
+
 public class Engine implements ISpellingEngine {
 
 	private static final String MY_MARKER_TYPE = "com.vogella.eclipse.languagetool.spellchecker.spellingproblem";
@@ -59,7 +61,7 @@ public class Engine implements ISpellingEngine {
 			AnnotatedTextBuilder textBuilder = new AnnotatedTextBuilder();
 			List<RuleMatch> matches;
 			try {
-				populateBuilder(textBuilder, document.get(region.getOffset(), region.getLength()));
+				MarkupUtil.populateBuilder(textBuilder, document.get(region.getOffset(), region.getLength()));
 				matches = langTool.check(textBuilder.build());
 				processMatches(collector, matches);
 			} catch (IOException | BadLocationException e) {
@@ -67,6 +69,13 @@ public class Engine implements ISpellingEngine {
 			}
 		}
 	}
+
+	/**
+	 * Tdestings
+	 * 
+	 * @param collector
+	 * @param matches
+	 */
 
 	private void processMatches(ISpellingProblemCollector collector, List<RuleMatch> matches) {
 		WorkspaceModifyOperation workspaceRunnable = new WorkspaceModifyOperation() {
@@ -139,59 +148,6 @@ public class Engine implements ISpellingEngine {
 				}
 			}
 		});
-	}
-
-	private static void populateBuilder(AnnotatedTextBuilder builder, String lines) {
-		String[] splittedList = lines.split("(?<=image::|btn:|menu:|include::|[\\s\\[\\`])"
-				+ "|"
-				+ "(?=[\\]\\[\\`])");
-		for (String token : splittedList) {
-			if (isMarkup(token)) {
-				builder.addMarkup(token);
-				continue;
-			}
-			builder.addText(token);
-		}
-	}
-
-	private static boolean isMarkup(String line) {
-		if (line.startsWith("image::")) {
-			return true;
-		}
-
-		if (line.startsWith("menu:")) {
-			return true;
-		}
-
-		if (line.contains("_")) {
-			return true;
-		}
-
-		if (line.contains("`")) {
-			return true;
-		}
-
-		if (line.startsWith("|")) {
-			return true;
-		}
-
-		if (line.startsWith("btn:")) {
-			return true;
-		}
-
-		if (line.startsWith("include::")) {
-			return true;
-		}
-
-		if (line.startsWith("----")) {
-			return true;
-		}
-		
-		if (line.contains("\\") || line.contains("/")) {
-			return true;
-		}
-
-		return false;
 	}
 
 }

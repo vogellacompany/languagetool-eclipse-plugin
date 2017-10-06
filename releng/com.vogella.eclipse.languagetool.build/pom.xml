@@ -10,6 +10,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
   <properties>
     <tycho.version>0.23.0</tycho.version>
     <eclipse-repo.url>http://download.eclipse.org/releases/oxygen</eclipse-repo.url>
+    <orbit-repo.url>http://download.eclipse.org/tools/orbit/downloads/drops/R20170919201930/repository</orbit-repo.url>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
   </properties>
 
@@ -17,6 +18,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <repository>
       <id>eclipse</id>
       <url>${eclipse-repo.url}</url>
+      <layout>p2</layout>
+    </repository>
+    <repository>
+      <id>orbit</id>
+      <url>${orbit-repo.url}</url>
       <layout>p2</layout>
     </repository>
 

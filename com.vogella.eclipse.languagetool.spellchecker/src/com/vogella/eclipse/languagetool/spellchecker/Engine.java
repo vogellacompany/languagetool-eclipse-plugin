@@ -36,7 +36,6 @@ import org.eclipse.ui.texteditor.spelling.ISpellingEngine;
 import org.eclipse.ui.texteditor.spelling.ISpellingProblemCollector;
 import org.eclipse.ui.texteditor.spelling.SpellingContext;
 import org.languagetool.JLanguageTool;
-import org.languagetool.Language;
 import org.languagetool.language.AmericanEnglish;
 import org.languagetool.markup.AnnotatedTextBuilder;
 import org.languagetool.rules.RuleMatch;
@@ -52,8 +51,7 @@ public class Engine implements ISpellingEngine {
 			ISpellingProblemCollector collector, IProgressMonitor monitor) {
 		JLanguageTool.setDataBroker(new EclipseRessourceDataBroker());
 		JLanguageTool langTool = new JLanguageTool(new AmericanEnglish());
-		Language language = langTool.getLanguage();
-		if (language == null) {
+		if (langTool.getLanguage() == null) {
 			return;
 		}
 
@@ -149,5 +147,4 @@ public class Engine implements ISpellingEngine {
 			}
 		});
 	}
-
 }

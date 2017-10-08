@@ -135,7 +135,14 @@ public class Engine implements ISpellingEngine {
 						try {
 							marker = file.createMarker(MY_MARKER_TYPE);
 							marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-							marker.setAttribute(IMarker.MESSAGE, match.getMessage());
+
+							String suggestedReplacements = "";
+							if (!match.getSuggestedReplacements().isEmpty()) {
+								suggestedReplacements = ". Possible Replacements: " + match.getSuggestedReplacements();
+							}
+
+							marker.setAttribute(IMarker.MESSAGE,
+									match.getMessage() + suggestedReplacements);
 							marker.setAttribute(IMarker.LOCATION, match.getLine() + 1);
 							marker.setAttribute(IMarker.CHAR_START, match.getFromPos());
 							marker.setAttribute(IMarker.CHAR_END, match.getToPos());
